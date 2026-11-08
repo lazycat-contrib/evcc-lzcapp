@@ -1,0 +1,40 @@
+application:
+  subdomain: evcc
+  multi_instance: false
+  # evcc shows an AdminPasswordPrompt on first visit asking the user to set
+  # an admin password (self-service credential bootstrap, papra precedent)
+  # -> public_path is appropriate.
+  public_path:
+    - /
+  upstreams:
+    - location: /package-licenses/
+      backend: file:///lzcapp/pkg/content/licenses/
+    - location: /
+      backend: http://evcc:7070/
+
+services:
+  evcc:
+    # upstream: evcc/evcc:0.319.0
+    image: docker.1ms.run/evcc/evcc:0.319.0
+    environment:
+      - TZ=Asia/Shanghai
+    binds:
+      # Database (evcc.db) and UI-created configuration live here
+      # (official docker-compose mounts /root/.evcc).
+      - /lzcapp/var/mutdata:/root/.evcc
+usage: |
+  evcc 是一个光伏自发自用车充管理平台，可联动电表、光伏逆变器与充电桩，
+  优先使用太阳能给电动车充电，支持负载管理与多种计费，自带 Web 界面。
+
+  使用方法：
+  1. 打开应用，首次进入会提示设置管理员密码（自助完成，请务必设置）。
+  2. 首次启动无配置文件时 evcc 以内置演示模式运行，请在界面中按向导
+     添加真实的电表/光伏/充电桩设备（UI 配置保存在数据库中）。
+  3. 配置与数据库保存在 /lzcapp/var/mutdata，卸载应用会一并删除，
+     请定期备份。
+
+  说明：
+  - 本包未做实机验证，功能以官方文档为准：https://docs.evcc.io/
+  - 充电桩/逆变器等硬件多位于局域网内，如设备发现或 Modbus 直连不通，
+    请检查网络可达性。
+  - 许可证 MIT，随包分发，见 /package-licenses/。

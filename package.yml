@@ -1,0 +1,18 @@
+package: community.lazycat.app.evcc
+name: evcc
+version: 0.319.0
+description: "EV charge controller: solar-aware home charging management with a web UI."
+min_os_version: "1.5.0"
+homepage: https://evcc.io
+author: evcc-io
+license: MIT
+permissions:
+  required:
+    - net.internet
+locales:
+  zh:
+    name: evcc
+    description: "光伏自发自用车充管理平台：联动电表/光伏/充电桩，优先用太阳能给车充电，自带 Web 界面。"
+  en:
+    name: evcc
+    description: "Solar-aware EV charge controller with a web UI for home charging management."
